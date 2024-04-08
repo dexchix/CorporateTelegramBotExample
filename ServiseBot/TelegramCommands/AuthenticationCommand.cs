@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiseBot.TelegramCommands
 {
-    internal class AuthenticationCommand
+    public class AuthenticationCommand
     {
     }
 }

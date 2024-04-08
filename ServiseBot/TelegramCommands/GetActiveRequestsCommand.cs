@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PRTelegramBot.Attributes;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace ServiseBot.TelegramCommands
 {
-    internal class GetActiveRequestsCommand
+    public class GetActiveRequestsCommand
     {
+
+        [ReplyMenuHandler("Получить список активных заявок")]
+        public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
+        {
+            await PRTelegramBot.Helpers.Message.Send(botClient, update, @"
+Заявка 1
+Заявка 2
+Заявка 3
+");
+        }
     }
 }

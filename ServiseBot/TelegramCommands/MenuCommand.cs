@@ -1,22 +1,17 @@
 ﻿using PRTelegramBot.Attributes;
 using PRTelegramBot.Helpers.TG;
+using PRTelegramBot.Models;
 using PRTelegramBot.Models.CallbackCommands;
 using PRTelegramBot.Models.InlineButtons;
 using PRTelegramBot.Models.Interface;
-using PRTelegramBot.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Types;
-using Telegram.Bot;
 using ServiseBot.Models;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ServiseBot.TelegramCommands
 {
-    internal class MenuCommand
+    public class MenuCommand
     {
         /// <summary>
         /// ВНИМАНИЕ! Это команда работает только для бота с id 1
@@ -57,13 +52,6 @@ namespace ServiseBot.TelegramCommands
 
             var sendMessage = await PRTelegramBot.Helpers.Message.Send(botClient, update, message, option);
         }
-        //[ReplyMenuHandler("|Заявка на отгул|")]
-        //public static async Task Otgul(ITelegramBotClient botClient, Update update)
-        //{
-          
-        //}
-
-
         #endregion 
 
         #region Slash

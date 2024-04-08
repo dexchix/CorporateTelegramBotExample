@@ -1,6 +1,6 @@
 ﻿namespace ServiseBot.Models.Caches
 {
-    internal class RecyclingCache : UserCache
+    internal class TimeOfCache : UserCache
     {
         public override string Data { get; set; }
         public string Operation { get; set; }

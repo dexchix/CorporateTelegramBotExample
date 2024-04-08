@@ -1,68 +1,71 @@
 ﻿using PRTelegramBot.Attributes;
-using PRTelegramBot.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Telegram.Bot.Types;
-using Telegram.Bot;
 using PRTelegramBot.Extensions;
-using ServiseBot.Models.Caches;
 using PRTelegramBot.Helpers.TG;
-using PRTelegramBot.Helpers;
+using PRTelegramBot.Models;
+using ServiseBot.Models.Caches;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using Microsoft.VisualBasic.FileIO;
 
 namespace ServiseBot.TelegramCommands
 {
-    internal class RecyclingRequestCommand
+    public class RecyclingRequestCommand
     {
-        [ReplyMenuHandler("Заявка на отгул")]
+        [ReplyMenuHandler("Заявка на доработку")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
         {
             update.GetCacheData<RecyclingCache>().Operation = update.Message.Text;
-            await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату в формате - ДД.ММ.ГГГГ:");
-            update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDate));
+            await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала переработанного времени в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+            update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
         }
 
-        /// <summary>
-        /// Обработка данных шага 1
-        /// </summary>
-        public static async Task ReceivingDate(ITelegramBotClient botClient, Update update, CustomParameters args)
+        public static async Task ReceivingDateStart(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
             DateTime dateTimeReceiving;
-            if(DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
+            if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
             {
-                update.GetCacheData<RecyclingCache>().DateRecycling = dateTimeReceiving;
+                update.GetCacheData<RecyclingCache>().DateStart = dateTimeReceiving;
+                update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateEnd));
+                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату конца переработанного времени в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+            }
+            else
+            {
+                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
+                update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
+            }
+        }
+
+        public static async Task ReceivingDateEnd(ITelegramBotClient botClient, Update update, CustomParameters args)
+        {
+            DateTime dateTimeReceiving;
+            if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
+            {
+                update.GetCacheData<RecyclingCache>().DateEnd = dateTimeReceiving;
                 update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingSubstantiation));
                 await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите обоснование:");
             }
             else
             {
                 await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
-                update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDate));
+                update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
             }
         }
 
-        /// <summary>
-        /// Обработка данных шага 2
-        /// </summary>
+
         public static async Task ReceivingSubstantiation(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
             update.GetCacheData<RecyclingCache>().Substantiation = update.Message.Text;
             var message = @$"
 Ваша заявка #324324. 
 {update.GetCacheData<RecyclingCache>().Operation}.           
-{update.GetCacheData<RecyclingCache>().DateRecycling}.
+{update.GetCacheData<RecyclingCache>().DateStart} - {update.GetCacheData<RecyclingCache>().DateEnd}.
 Обоснованиее: {update.GetCacheData<RecyclingCache>().Substantiation}";
-            
-            
+
+
             var menuList = new List<KeyboardButton>();
             menuList.Add(new KeyboardButton("Подтвердить"));
             menuList.Add(new KeyboardButton("Отмена"));
 
-            //Генерация меню в 2 столбца
             var menu = MenuGenerator.ReplyKeyboard(1, menuList);
             var option = new OptionMessage();
             option.MenuReplyKeyboardMarkup = menu;
@@ -72,7 +75,7 @@ namespace ServiseBot.TelegramCommands
 
         public static async Task CreateReceivingRequest(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
-            if(update.Message.Text == "Подтвердить")
+            if (update.Message.Text == "Подтвердить")
             {
                 //сохранение в бд
                 var message = $@"
@@ -91,10 +94,6 @@ namespace ServiseBot.TelegramCommands
             update.ClearStepUser();
         }
 
-        /// <summary>
-        /// Игнорирование пошагового выполнения команд
-        /// Напиши в боте ignore
-        /// </summary>
         [ReplyMenuHandler("ignore")]
         public static async Task IgnoreStep(ITelegramBotClient botClient, Update update)
         {
