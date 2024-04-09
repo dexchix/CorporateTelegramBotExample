@@ -2,7 +2,7 @@
 using PRTelegramBot.Extensions;
 using PRTelegramBot.Helpers.TG;
 using PRTelegramBot.Models;
-using ServiseBot.Models.Caches;
+using ServiseBot.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -14,7 +14,7 @@ namespace ServiseBot.TelegramCommands
         [ReplyMenuHandler("Сообщение об инциденте")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
         {
-            update.GetCacheData<IncidentCache>().Operation = update.Message.Text;
+            update.GetCacheData<OperationCache>().Operation = update.Message.Text;
             await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату инцидента в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
             update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDate));
         }
@@ -25,7 +25,7 @@ namespace ServiseBot.TelegramCommands
             DateTime dateTimeReceiving;
             if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
             {
-                update.GetCacheData<IncidentCache>().DateIncident = dateTimeReceiving;
+                update.GetCacheData<OperationCache>().DateStart = dateTimeReceiving;
                 update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingSubstantiation));
                 await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите обоснование:");
             }
@@ -39,12 +39,12 @@ namespace ServiseBot.TelegramCommands
 
         public static async Task ReceivingSubstantiation(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
-            update.GetCacheData<IncidentCache>().Description = update.Message.Text;
+            update.GetCacheData<OperationCache>().Substantiation = update.Message.Text;
             var message = @$"
 Ваша заявка #324324. 
-{update.GetCacheData<IncidentCache>().Operation}.           
-{update.GetCacheData<IncidentCache>().DateIncident}.
-Обоснованиее: {update.GetCacheData<IncidentCache>().Description}";
+{update.GetCacheData<OperationCache>().Operation}.           
+{update.GetCacheData<OperationCache>().DateStart}.
+Обоснованиее: {update.GetCacheData<OperationCache>().Substantiation}";
 
 
             var menuList = new List<KeyboardButton>();
