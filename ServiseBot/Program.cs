@@ -1,6 +1,4 @@
-﻿using DAL;
-using PRTelegramBot.Core;
-using System.Data.Entity;
+﻿using PRTelegramBot.Core;
 
 //Команда для выхода
 const string EXIT_COMMAND = "exit";

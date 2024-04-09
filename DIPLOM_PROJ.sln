@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InformationBot", "InformationBot\InformationBot.csproj", "{D10BE25C-2507-4DDC-ACD9-DE75979A05F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanel.Server", "AdminPanel\AdminPanel.Server\AdminPanel.Server.csproj", "{A1413CE0-5A12-46F5-86DF-B86313231C02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPanel.Server", "AdminPanel\AdminPanel.Server\AdminPanel.Server.csproj", "{A1413CE0-5A12-46F5-86DF-B86313231C02}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "adminpanel.client", "AdminPanel\adminpanel.client\adminpanel.client.esproj", "{AE3DD3C2-8B36-481E-A29E-0511A828B5F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "NotificationService\NotificationService.csproj", "{23D0E209-80C7-4E6C-AA7A-3EBF08602BCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{AE3DD3C2-8B36-481E-A29E-0511A828B5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE3DD3C2-8B36-481E-A29E-0511A828B5F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE3DD3C2-8B36-481E-A29E-0511A828B5F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{23D0E209-80C7-4E6C-AA7A-3EBF08602BCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D0E209-80C7-4E6C-AA7A-3EBF08602BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D0E209-80C7-4E6C-AA7A-3EBF08602BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D0E209-80C7-4E6C-AA7A-3EBF08602BCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
