@@ -12,15 +12,12 @@ namespace DAL
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TimeOfRequest>()
-                 .HasOne(t => t.Employe)
-                 .WithMany(e => e.TimeOfRequests)
-                 .HasForeignKey(t => t.EmployeId);
+
         }
 
         public virtual DbSet<Employe> Employes { get; set; }
-
-        public virtual DbSet<TimeOfRequest> TimeOfRequests { get; set; } 
+        public virtual DbSet<IncidentReport> IncidentReports { get; set; }
+        public virtual DbSet<RequestsForDays> RequestsForDays { get; set; } 
 
     }
 }

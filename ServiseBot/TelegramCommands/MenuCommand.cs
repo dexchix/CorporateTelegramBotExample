@@ -29,9 +29,10 @@ namespace ServiseBot.TelegramCommands
         /// Генерация простого меню
         /// </summary>
         [ReplyMenuHandler("Меню")]
-        public static async Task Menu(ITelegramBotClient botClient, Update update)
+        public static async Task Menu(ITelegramBotClient botClient, Update update, string message = null)
         {
-            var message = "Меню";
+            if(string.IsNullOrWhiteSpace(message))
+                message = "Меню";
 
             var menuList = new List<KeyboardButton>();
             //Создаем список string 

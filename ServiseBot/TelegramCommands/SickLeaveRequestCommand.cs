@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ServiseBot.TelegramCommands
 {
-    public class ApplicationForSickLeaveCommand
+    public class SickLeaveRequestCommand
     {
         [ReplyMenuHandler("Заявка на больничный")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)

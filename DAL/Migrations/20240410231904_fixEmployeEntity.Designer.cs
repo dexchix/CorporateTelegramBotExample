@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ServiceBotContext))]
-    [Migration("20240408224445_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20240410231904_fixEmployeEntity")]
+    partial class fixEmployeEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,12 +42,51 @@ namespace DAL.Migrations
                     b.Property<bool>("IsAutorized")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Employes");
                 });
 
-            modelBuilder.Entity("DAL.Models.TimeOfRequest", b =>
+            modelBuilder.Entity("DAL.Models.IncidentReport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("EmployeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("IncidentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TelegramChatId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeId");
+
+                    b.ToTable("IncidentReports");
+                });
+
+            modelBuilder.Entity("DAL.Models.RequestsForDays", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,26 +101,36 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("EmployeId")
+                    b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("RequestStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RequestType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Responce")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("TelegramChatId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeId");
+                    b.HasIndex("EmployeeId");
 
-                    b.ToTable("TimeOfRequests");
+                    b.ToTable("RequestsForDays");
                 });
 
-            modelBuilder.Entity("DAL.Models.TimeOfRequest", b =>
+            modelBuilder.Entity("DAL.Models.IncidentReport", b =>
                 {
                     b.HasOne("DAL.Models.Employe", "Employe")
                         .WithMany()
@@ -90,6 +139,22 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Employe");
+                });
+
+            modelBuilder.Entity("DAL.Models.RequestsForDays", b =>
+                {
+                    b.HasOne("DAL.Models.Employe", "Employee")
+                        .WithMany("RequestsForDays")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("DAL.Models.Employe", b =>
+                {
+                    b.Navigation("RequestsForDays");
                 });
 #pragma warning restore 612, 618
         }

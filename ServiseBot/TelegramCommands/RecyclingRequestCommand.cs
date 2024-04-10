@@ -17,7 +17,6 @@ namespace ServiseBot.TelegramCommands
             update.GetCacheData<OperationCache>().Operation = update.Message.Text;
             await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала переработанного времени в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
             update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
-            //botClient.SendTextMessageAsync()
         }
 
         public static async Task ReceivingDateStart(ITelegramBotClient botClient, Update update, CustomParameters args)

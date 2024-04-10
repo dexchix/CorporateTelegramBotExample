@@ -37,6 +37,7 @@ namespace NotificationService.Controllers
             })
             .ToArray();
         }
+
         [NonAction]
         private void LaunchSendTelegramJob()
         {
@@ -44,14 +45,15 @@ namespace NotificationService.Controllers
 
             RecurringJob.AddOrUpdate("SendRequestResultToUser", () => TEST(), Cron.MinuteInterval(1));
         }
+
         [NonAction]
-         public void TEST()
+        public void TEST()
         {
             var tbc = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
-            ChatId  chatId = new ChatId(1334655443);
+            ChatId chatId = new ChatId(1334655443);
 
 
-             tbc.SendTextMessageAsync(chatId, "Hangfire Job Succsided");
+            tbc.SendTextMessageAsync(chatId, "Hangfire Job Succsided");
         }
 
     }
