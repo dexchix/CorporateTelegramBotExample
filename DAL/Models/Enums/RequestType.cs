@@ -5,18 +5,21 @@
         /// <summary>
         /// Больничный
         /// </summary>
-        SickLeave,
+        Больничный,
+
         /// <summary>
         /// Переработка
         /// </summary>
-        Recycling,
+        Переработка,
+
         /// <summary>
         /// Отгул
         /// </summary>
-        TimeOf,
+        Отгул,
+
         /// <summary>
         /// Отпуск
         /// </summary>
-        Vacation,
+        Отпуск,
     }
 }

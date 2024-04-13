@@ -1,4 +1,8 @@
-﻿using PRTelegramBot.Attributes;
+﻿using DAL;
+using PRTelegramBot.Attributes;
+using PRTelegramBot.Extensions;
+using System.Data.Entity;
+using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -10,11 +14,24 @@ namespace ServiseBot.TelegramCommands
         [ReplyMenuHandler("Получить список активных заявок")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
         {
-            await PRTelegramBot.Helpers.Message.Send(botClient, update, @"
-Заявка 1
-Заявка 2
-Заявка 3
-");
+            
+            var context = new ServiceBotContext();
+            var activeRequests =  context.RequestsForDays
+                .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Рассматривается)
+                .Where(x => x.TelegramChatId == update.Message.Chat.Id)
+                .ToArray();
+
+            StringBuilder response = new StringBuilder(@"Список заявок находящихся в рассмотрении:");
+            foreach (var request in activeRequests)
+            {
+                response.Append(@$"
+ - Заявка номер: {request.Number}
+    Тип: {request.RequestType}
+    Дата создания: {request.CreateDate}
+    Статус: {request.RequestStatus}");
+            }
+
+            await PRTelegramBot.Helpers.Message.Send(botClient, update, response.ToString());
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IAppeal
     {
-        public int Id { get; set; } 
-        public int TelegramChatId { get; set; }
+        public Guid Id { get; set; } 
+        public long TelegramChatId { get; set; }
     }
 }

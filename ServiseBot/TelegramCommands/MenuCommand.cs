@@ -14,18 +14,6 @@ namespace ServiseBot.TelegramCommands
     public class MenuCommand
     {
         /// <summary>
-        /// ВНИМАНИЕ! Это команда работает только для бота с id 1
-        /// Напишите в боте Тест
-        /// </summary>
-        #region Reply
-        [ReplyMenuHandler(1, "Тест")]
-        public static async Task Example(ITelegramBotClient botClient, Update update)
-        {
-            var message = "Hello world One";
-            var sendMessage = await PRTelegramBot.Helpers.Message.Send(botClient, update, message);
-        }
-
-        /// <summary>
         /// Генерация простого меню
         /// </summary>
         [ReplyMenuHandler("Меню")]
@@ -41,9 +29,10 @@ namespace ServiseBot.TelegramCommands
             menuList.Add(new KeyboardButton("Заявка на отгул"));
             menuList.Add(new KeyboardButton("Заявка на отпуск"));
             menuList.Add(new KeyboardButton("Заявка на больничный"));
-            menuList.Add(new KeyboardButton("Заявка на доработку"));
+            menuList.Add(new KeyboardButton("Заявка на переработку"));
             menuList.Add(new KeyboardButton("Сообщение об инциденте"));
             menuList.Add(new KeyboardButton("Получить список активных заявок"));
+            menuList.Add(new KeyboardButton("Горячая линия"));
 
             //Генерация меню в 2 столбца
             var menu = MenuGenerator.ReplyKeyboard(1, menuList);
@@ -53,7 +42,6 @@ namespace ServiseBot.TelegramCommands
 
             var sendMessage = await PRTelegramBot.Helpers.Message.Send(botClient, update, message, option);
         }
-        #endregion 
 
         #region Slash
         /// <summary>

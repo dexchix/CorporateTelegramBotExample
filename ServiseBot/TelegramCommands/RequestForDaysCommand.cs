@@ -1,4 +1,6 @@
-﻿using PRTelegramBot.Attributes;
+﻿using DAL;
+using DAL.Models;
+using PRTelegramBot.Attributes;
 using PRTelegramBot.Extensions;
 using PRTelegramBot.Helpers.TG;
 using PRTelegramBot.Models;
@@ -9,13 +11,18 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ServiseBot.TelegramCommands
 {
-    public class RecyclingRequestCommand
+    public class RequestForDaysCommand
     {
-        [ReplyMenuHandler("Заявка на доработку")]
+        [ReplyMenuHandler("Заявка на переработку", "Заявка на отпуск", "Заявка на отгул", "Заявка на больничный")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
         {
-            update.GetCacheData<OperationCache>().Operation = update.Message.Text;
-            await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала переработанного времени в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+            var context = new ServiceBotContext();
+            var employe = context.Employes
+                .Where(x => update.Message.Chat.Username == x.TelegramLogin)
+                .FirstOrDefault();
+            update.GetCacheData<OperationCache>().EmployeId = employe.Id;
+            update.GetCacheData<OperationCache>().Operation = Helper.GetOperationTypeToEnum(update.Message.Text);
+            await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала периода  в формате - ДД.ММ.ГГГГ ЧЧ:ММ:СС:");
             update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
         }
 
@@ -24,9 +31,9 @@ namespace ServiseBot.TelegramCommands
             DateTime dateTimeReceiving;
             if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
             {
-                update.GetCacheData<OperationCache>().DateStart = dateTimeReceiving;
+                update.GetCacheData<OperationCache>().DateStart = dateTimeReceiving.ToUniversalTime();
                 update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateEnd));
-                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату конца переработанного времени в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату конца периода в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
             }
             else
             {
@@ -40,9 +47,9 @@ namespace ServiseBot.TelegramCommands
             DateTime dateTimeReceiving;
             if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
             {
-                update.GetCacheData<OperationCache>().DateEnd = dateTimeReceiving;
+                update.GetCacheData<OperationCache>().DateEnd = dateTimeReceiving.ToUniversalTime();
                 update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingSubstantiation));
-                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите обоснование:");
+                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите описание:");
             }
             else
             {
@@ -54,12 +61,11 @@ namespace ServiseBot.TelegramCommands
 
         public static async Task ReceivingSubstantiation(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
-            update.GetCacheData<OperationCache>().Substantiation = update.Message.Text;
+            update.GetCacheData<OperationCache>().Description = update.Message.Text;
             var message = @$"
-Ваша заявка #324324. 
-{update.GetCacheData<OperationCache>().Operation}.           
-{update.GetCacheData<OperationCache>().DateStart} - {update.GetCacheData<OperationCache>().DateEnd}.
-Обоснованиее: {update.GetCacheData<OperationCache>().Substantiation}";
+Тип операции: {Helper.GetOperationTypeToString(update.GetCacheData<OperationCache>().Operation)}           
+    Дата/время переработки: {update.GetCacheData<OperationCache>().DateStart} - {update.GetCacheData<OperationCache>().DateEnd}.
+    Обоснованиее: {update.GetCacheData<OperationCache>().Description}.";
 
 
             var menuList = new List<KeyboardButton>();
@@ -75,15 +81,30 @@ namespace ServiseBot.TelegramCommands
 
         public static async Task CreateReceivingRequest(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
+            var context = new ServiceBotContext();
             if (update.Message.Text == "Подтвердить")
             {
-                //сохранение в бд
+                var id = Guid.NewGuid();
+                var request = new RequestsForDays()
+                {
+                    Id = id,
+                    CreateDate = DateTime.UtcNow,
+                    Description = update.GetCacheData<OperationCache>().Description,
+                    EmployeeId = update.GetCacheData<OperationCache>().EmployeId,
+                    EndDate = update.GetCacheData<OperationCache>().DateEnd,
+                    StartDate = update.GetCacheData<OperationCache>().DateStart,
+                    Number = Helper.GuidToInt(id),
+                    RequestStatus = DAL.Models.Enums.RequestStatus.Рассматривается,
+                    RequestType = update.GetCacheData<OperationCache>().Operation,
+                    TelegramChatId = update.Message.Chat.Id
+                };
+                context.RequestsForDays.Add(request);
+                context.SaveChanges();
                 var message = $@"
-Ваша заявка #4324234 успешно создана. Статус: Рассматривается.";
+Ваша заявка №{request.Number} успешно создана. Статус: Рассматривается.";
 
                 await PRTelegramBot.Helpers.Message.Send(botClient, update, message);
                 await MenuCommand.Menu(botClient, update);
-                //await PRTelegramBot.Helpers.Message.Send(botClient, update, "Меню");
             }
             else
             {

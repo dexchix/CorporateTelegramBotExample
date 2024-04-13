@@ -4,11 +4,12 @@ namespace DAL.Models
 {
     public class IncidentReport : IAppeal
     {
-        public int Id { get; set; }
-        public int TelegramChatId { get; set; }
+        public Guid Id { get; set; }
+        public int Number { get; set; }
+        public long TelegramChatId { get; set; }
         public DateTime IncidentDate { get; set; }
         public string Description { get; set; }
-        public int EmployeeId { get; set; }
-        public Employe Employe { get; set; }
+        public Guid EmployeId { get; set; } 
+        public virtual Employe Employe { get; set; }
     }
 }

@@ -2,7 +2,14 @@
 {
     public enum RequestStatus
     {
-        Pending, 
-        Closed
+        /// <summary>
+        /// Рассматривается
+        /// </summary>
+        Рассматривается, 
+
+        /// <summary>
+        /// Закрыто
+        /// </summary>
+        Закрыто,
     }
 }
