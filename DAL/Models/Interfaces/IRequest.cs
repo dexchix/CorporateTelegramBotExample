@@ -4,9 +4,10 @@ namespace DAL.Models.Interfaces
 {
     public interface IRequest : IAppeal
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        public int Number { get; set; }
         public RequestType RequestType { get; set; }
-        public int TelegramChatId { get; set; }
+        public long TelegramChatId { get; set; }
         public string Description { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime StartDate { get; set; }

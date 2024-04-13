@@ -12,15 +12,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ServiceBotContext))]
-    [Migration("20240410222042_AddModels")]
-    partial class AddModels
+    [Migration("20240413204806_SecMigrt")]
+    partial class SecMigrt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -42,7 +45,18 @@ namespace DAL.Migrations
                     b.Property<bool>("IsAutorized")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TelegramId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TelegramLogin")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -53,11 +67,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.IncidentReport", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -66,11 +78,11 @@ namespace DAL.Migrations
                     b.Property<Guid>("EmployeId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TelegramChatId")
                         .HasColumnType("integer");
@@ -84,11 +96,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.RequestsForDays", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
@@ -103,6 +113,9 @@ namespace DAL.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
                     b.Property<int>("RequestStatus")
                         .HasColumnType("integer");
 
@@ -110,7 +123,6 @@ namespace DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Responce")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("StartDate")

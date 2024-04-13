@@ -1,39 +1,7 @@
-﻿using DAL;
-using DAL.Models;
-using PRTelegramBot.Core;
-using System.Data.Entity;
-
-
-//var employe = new Employe()
-//{
-//    Id = Guid.NewGuid(),
-//    Department = "ОРПО",
-//    FullName = "Тестов Тест Тестович",
-//    IsAutorized = false,
-//    Login = "test",
-//    Phone = "79803391975",
-//};
-//var requestForDay = new RequestsForDays()
-//{
-//    Id = 0,
-//    Description = "Отгул в связи с сессией",
-//    CreateDate = DateTime.UtcNow,
-//    Employee = employe,
-//    EndDate = DateTime.UtcNow,
-//    RequestStatus = DAL.Models.Enums.RequestStatus.Pending,
-//    RequestType = DAL.Models.Enums.RequestType.TimeOf,
-//    TelegramChatId = 454353,
-//    StartDate = DateTime.UtcNow
-//};
-using var context = new ServiceBotContext();
-//context.Add(requestForDay);
-//context.SaveChanges();  
+﻿using PRTelegramBot.Core;
 
 //Команда для выхода
 const string EXIT_COMMAND = "exit";
-
-var employe = context.RequestsForDays.Include(x=> x.Employee).First();
-
 //Телеграм бот с id 0 
 var telegram = new PRBot(option =>
 {

@@ -4,7 +4,7 @@ using Telegram.Bot.Types;
 
 namespace ServiseBot.TelegramCommands
 {
-    internal class HotlineCommand
+    public class HotlineCommand
     {
         [ReplyMenuHandler("Горячая линия")]
         public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)

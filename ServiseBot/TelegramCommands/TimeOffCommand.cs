@@ -13,55 +13,55 @@ namespace ServiseBot.TelegramCommands
     {
         public class RecyclingRequestCommand
         {
-            [ReplyMenuHandler("Заявка на отгул")]
-            public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
-            {
-                update.GetCacheData<OperationCache>().Operation = update.Message.Text;
-                await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала отгула в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
-                update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
-            }
+            //[ReplyMenuHandler("Заявка на отгул")]
+            //public static async Task ReceivingOperation(ITelegramBotClient botClient, Update update)
+            //{
+            //    update.GetCacheData<OperationCache>().Operation = DAL.Models.Enums.RequestType.Отгул;
+            //    await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату начала отгула в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+            //    update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
+            //}
 
-            public static async Task ReceivingDateStart(ITelegramBotClient botClient, Update update, CustomParameters args)
-            {
-                DateTime dateTimeReceiving;
-                if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
-                {
-                    update.GetCacheData<OperationCache>().DateStart = dateTimeReceiving;
-                    update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateEnd));
-                    await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату конца отгула в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
-                }
-                else
-                {
-                    await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
-                    update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
-                }
-            }
+            //public static async Task ReceivingDateStart(ITelegramBotClient botClient, Update update, CustomParameters args)
+            //{
+            //    DateTime dateTimeReceiving;
+            //    if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
+            //    {
+            //        update.GetCacheData<OperationCache>().DateStart = dateTimeReceiving;
+            //        update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateEnd));
+            //        await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите дату конца отгула в формате - ДД.ММ.ГГГГ ЧЧ.ММ.СС:");
+            //    }
+            //    else
+            //    {
+            //        await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
+            //        update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
+            //    }
+            //}
 
-            public static async Task ReceivingDateEnd(ITelegramBotClient botClient, Update update, CustomParameters args)
-            {
-                DateTime dateTimeReceiving;
-                if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
-                {
-                    update.GetCacheData<OperationCache>().DateEnd = dateTimeReceiving;
-                    update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingSubstantiation));
-                    await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите обоснование:");
-                }
-                else
-                {
-                    await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
-                    update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
-                }
-            }
+            //public static async Task ReceivingDateEnd(ITelegramBotClient botClient, Update update, CustomParameters args)
+            //{
+            //    DateTime dateTimeReceiving;
+            //    if (DateTime.TryParse(update.Message.Text, out dateTimeReceiving))
+            //    {
+            //        update.GetCacheData<OperationCache>().DateEnd = dateTimeReceiving;
+            //        update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingSubstantiation));
+            //        await PRTelegramBot.Helpers.Message.Send(botClient, update, "Введите описание:");
+            //    }
+            //    else
+            //    {
+            //        await PRTelegramBot.Helpers.Message.Send(botClient, update, "Дата некорректна. Повторите попытку.");
+            //        update.RegisterNextStep(new PRTelegramBot.Models.StepTelegram(ReceivingDateStart));
+            //    }
+            //}
 
 
             public static async Task ReceivingSubstantiation(ITelegramBotClient botClient, Update update, CustomParameters args)
             {
-                update.GetCacheData<OperationCache>().Substantiation = update.Message.Text;
+                update.GetCacheData<OperationCache>().Description = update.Message.Text;
                 var message = @$"
 Ваша заявка #324324. 
 {update.GetCacheData<OperationCache>().Operation}.           
 {update.GetCacheData<OperationCache>().DateStart} - {update.GetCacheData<OperationCache>().DateEnd}.
-Обоснованиее: {update.GetCacheData<OperationCache>().Substantiation}";
+Обоснованиее: {update.GetCacheData<OperationCache>().Description}";
 
 
                 var menuList = new List<KeyboardButton>();
