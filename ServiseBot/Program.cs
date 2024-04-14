@@ -17,35 +17,14 @@ var telegram = new PRBot(option =>
     option.BotId = 0;
 });
 
-//Телеграм бот с id 1
-var telegramx = new PRBot(option =>
-{
-    // Токен телеграм бота берется из BotFather
-    option.Token = "";
-    //Перед запуском очищает список обновлений, которые накопились когда бот не работал.
-    option.ClearUpdatesOnStart = true;
-    // Если есть хоть 1 идентификатор телеграм пользователя, могут пользоваться только эти пользователи
-    option.WhiteListUsers = new List<long>() { };
-    // Идентификатор телеграм пользователя
-    option.Admins = new List<long>() { };
-    // Уникальных идентификатор для бота, используется, чтобы в одном приложение запускать несколько ботов
-    option.BotId = 1;
-});
-
-
 
 //Подписка на логи бота 0
 telegram.OnLogCommon += Telegram_OnLogCommon;
 telegram.OnLogError += Telegram_OnLogError;
 
-//Подписка на логи бота 1
-telegramx.OnLogCommon += Telegram_OnLogCommon;
-telegramx.OnLogError += Telegram_OnLogError;
 
 //Запуск бота id 0
 await telegram.Start();
-//Запуск бота id 1
-await telegramx.Start();
 
 //События логов ошибок
 void Telegram_OnLogError(Exception ex, long? id)

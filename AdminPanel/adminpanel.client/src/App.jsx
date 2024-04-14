@@ -5,7 +5,8 @@ function App() {
     const [forecasts, setForecasts] = useState();
 
     useEffect(() => {
-        populateWeatherData();
+        // populateWeatherData();
+        getRequests();
     }, []);
 
     const contents = forecasts === undefined
@@ -20,13 +21,13 @@ function App() {
                 </tr>
             </thead>
             <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
+                {forecasts.map(forecast => 
+      <tr key={forecast.number}>
+      <td>{forecast.number}</td>
+      <td>{forecast.number}</td>
+      <td>{forecast.number}</td>
+      <td>{forecast.number}</td>
+  </tr>
                 )}
             </tbody>
         </table>;
@@ -40,10 +41,22 @@ function App() {
     );
     
     async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
+        const response = await fetch('weatherforecast/GetWeatherForecast');
+        debugger;
+        const data = await response.json();
+        setForecasts(data);
+    }
+
+    async function getRequests() {
+        const response = await fetch('RequestsForDays/GetActiveRequests');
+        debugger;
         const data = await response.json();
         setForecasts(data);
     }
 }
 
 export default App;
+
+
+
+//"https://localhost:5173/RequestsForDays/GetActiveRequests"

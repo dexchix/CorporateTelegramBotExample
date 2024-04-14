@@ -1,12 +1,14 @@
 ﻿using DAL.Models.Enums;
 using DAL.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DAL.Models
 {
     public class RequestsForDays : IRequest
     {
         public Guid Id { get; set; }
+        public string EmployeFullName {  get; set; }    
         public int Number { get; set; }
         public long TelegramChatId { get; set; }
         public string Description { get; set; }
@@ -16,6 +18,7 @@ namespace DAL.Models
         public string? Responce { get; set; }
         public RequestStatus RequestStatus { get; set; }
         public Guid EmployeeId { get; set; }
+        [JsonIgnore]
         public virtual Employe Employee { get; set; }
         public RequestType RequestType { get; set; }
     }

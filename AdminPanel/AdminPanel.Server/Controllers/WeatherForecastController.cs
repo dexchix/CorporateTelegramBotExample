@@ -21,7 +21,7 @@ namespace AdminPanel.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet("GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
             var context = new ServiceBotContext();
@@ -30,9 +30,9 @@ namespace AdminPanel.Server.Controllers
                 .ToArray();
             foreach (var closedRequest in closedRequests)
             {
-                var tbc = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
-                ChatId chatId = new ChatId(closedRequest.TelegramChatId);
-                tbc.SendTextMessageAsync(chatId, $"Заявка № {closedRequest.Number} одобрена!");
+                //var tbc = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
+                //ChatId chatId = new ChatId(closedRequest.TelegramChatId);
+                //tbc.SendTextMessageAsync(chatId, $"Заявка № {closedRequest.Number} одобрена!");
             }
 
 
