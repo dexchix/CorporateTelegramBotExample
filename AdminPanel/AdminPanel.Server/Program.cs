@@ -36,12 +36,10 @@ namespace AdminPanel.Server
             app.UseAuthorization();
 
 
-            app.UseRouting(); // Включаем маршрутизацию
-
-            // Настройка маршрутов для контроллеров
+            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers(); // Определение маршрутов для контроллеров
+                endpoints.MapControllers();
             });
 
             app.MapFallbackToFile("/index.html");

@@ -23,87 +23,87 @@ namespace AdminPanel.Server.Controllers
                 return null;
         }
 
-        //[HttpGet(Name = "GetAllRequests")]
-        //public IActionResult GetAll()
-        //{
-        //    var context = new ServiceBotContext();
-        //    var requests = context.RequestsForDays
-        //        .ToArray();
+        [HttpGet("GetAllRequests")]
+        public IActionResult GetAll()
+        {
+            var context = new ServiceBotContext();
+            var requests = context.RequestsForDays
+                .ToArray();
 
-        //    if (requests.Length > 0)
-        //        return Ok(requests);
-        //    else
-        //        return NotFound(context);
-        //}
-        //[HttpGet(Name = "GetClosedRequests")]
-        //public IActionResult GetClosed()
-        //{
-        //    var context = new ServiceBotContext();
-        //    var requests = context.RequestsForDays
-        //        .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Закрыто)
-        //        .ToArray();
+            if (requests.Length > 0)
+                return Ok(requests);
+            else
+                return NotFound(context);
+        }
+        [HttpGet("GetClosedRequests")]
+        public IActionResult GetClosed()
+        {
+            var context = new ServiceBotContext();
+            var requests = context.RequestsForDays
+                .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Закрыто)
+                .ToArray();
 
-        //    if (requests.Length > 0)
-        //        return Ok(requests);
-        //    else
-        //        return NotFound(context);
-        //}
-        //[HttpGet(Name = "GetApprovedRequests")]
-        //public IActionResult GetAproved()
-        //{
-        //    var context = new ServiceBotContext();
-        //    var requests = context.RequestsForDays
-        //        .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Одобрено)
-        //        .ToArray();
+            if (requests.Length > 0)
+                return Ok(requests);
+            else
+                return NotFound(context);
+        }
+        [HttpGet("GetApprovedRequests")]
+        public IActionResult GetAproved()
+        {
+            var context = new ServiceBotContext();
+            var requests = context.RequestsForDays
+                .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Одобрено)
+                .ToArray();
 
-        //    if (requests.Length > 0)
-        //        return Ok(requests);
-        //    else
-        //        return NotFound(context);
-        //}
+            if (requests.Length > 0)
+                return Ok(requests);
+            else
+                return NotFound(context);
+        }
 
-        //[HttpGet(Name = "GetNotApprovedRequests")]
-        //public IActionResult GetNotAproved()
-        //{
-        //    var context = new ServiceBotContext();
-        //    var requests = context.RequestsForDays
-        //        .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Неодобрено)
-        //        .ToArray();
+        [HttpGet("GetNotApprovedRequests")]
+        public IActionResult GetNotAproved()
+        {
+            var context = new ServiceBotContext();
+            var requests = context.RequestsForDays
+                .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Неодобрено)
+                .ToArray();
 
-        //    if (requests.Length > 0)
-        //        return Ok(requests);
-        //    else
-        //        return NotFound(context);
-        //}
+            if (requests.Length > 0)
+                return Ok(requests);
+            else
+                return NotFound(context);
+        }
 
 
-        //[HttpPut(Name = "AproveRequest")]
-        //public IActionResult Aprove([FromHeader] Guid id)
-        //{        
-        //    var context = new ServiceBotContext();
-        //    var request = context.RequestsForDays
-        //        .Where(x => x.Id == id) 
-        //        .FirstOrDefault();
-        //    request.RequestStatus = DAL.Models.Enums.RequestStatus.Одобрено;
-        //    context.RequestsForDays.Add(request);
+        [HttpPut("AproveRequest")]
+        public IActionResult Aprove([FromHeader] Guid id)
+        {
+            var context = new ServiceBotContext();
+            var request = context.RequestsForDays
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+            request.RequestStatus = DAL.Models.Enums.RequestStatus.Одобрено;
+            context.RequestsForDays.Add(request);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
-        //[HttpPut(Name = "DeniedRequests")]
-        //public IActionResult Denied(
-        //    [FromHeader] Guid id, 
-        //    [FromHeader] string reason)
-        //{
-        //    var context = new ServiceBotContext();
-        //    var request = context.RequestsForDays
-        //        .Where(x => x.Id == id)
-        //        .FirstOrDefault();
-        //    request.RequestStatus = DAL.Models.Enums.RequestStatus.Закрыто;
-        //    request.Responce = reason; 
-        //    context.RequestsForDays.Add(request);
+        [HttpPut("DeniedRequests")]
+        public IActionResult Denied(
+            [FromHeader] Guid id,
+            [FromHeader] string reason)
+        {
+            var context = new ServiceBotContext();
+            var request = context.RequestsForDays
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+            request.RequestStatus = DAL.Models.Enums.RequestStatus.Закрыто;
+            request.Responce = reason;
+            context.RequestsForDays.Add(request);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
 }
