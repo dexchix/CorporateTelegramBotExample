@@ -8,9 +8,6 @@ import { CreateUpdateEmploye, Mode } from '../components/CreateUpdateEmploye';
 import { open } from 'fs/promises';
 
 export default function EmployeesPage(){
-    // const [employes, setEmployes] = useState<Employee[]>([]);
-    // const [loading, setLoading] = useState(true);
-
     const[values, setValues] = useState<Employee>({
         id: "",
         login: "",
@@ -66,7 +63,7 @@ export default function EmployeesPage(){
             setModalOpen(true);
         };
 
-        const closeModal = () => {
+        const closeModal = () => 
           setModalOpen(false);
 
         const openEditModal = (employee: Employee) => {
@@ -74,20 +71,19 @@ export default function EmployeesPage(){
             setValues(employee);
             setModalOpen(true);
         }
-    };
+   
 
     return (
         <div>
-            <Button style={{margin: 10}} onClick={openModal
-            }>Добавить сотрудника</Button>
-                <CreateUpdateEmploye
+            <Button style={{margin: 10}} onClick={openModal}>Добавить сотрудника</Button>
+            <CreateUpdateEmploye
                 mode = {mode}
                 values={values}
                 isModalOpen = {isModalOpen}
                 handleCreate={handleCreateEmploye}
                 handleUpdate={handleUpdateEmploye}
                 handleCancel={closeModal}
-                />
+            />
             <Table columns={columns} dataSource={employes}/>
         </div>);
 }
@@ -120,30 +116,5 @@ export default function EmployeesPage(){
     }
   ];
 
-//   const data: DataType[] = [
-//     {
-//       id: '1',
-//       login: 'test',
-//       fullName: 'Иванов Иван Иванович',
-//       department: 'Отдел разработки программного обеспечения',
-//       isAutorized: 'Не авторизован',
-//       phone: '79803391975'
-//     },
-//     {
-//         id: '1',
-//         login: 'test1',
-//         fullName: 'Петров Башир Баширович',
-//         department: 'Отдел разработки программного обеспечения',
-//         isAutorized: 'Не авторизован',
-//         phone: '79803391975'
-//     },
-//     {
-//         id: '1',
-//         login: 'test2',
-//         fullName: 'Баширов Петр Петрович',
-//         department: 'Отдел разработки программного обеспечения',
-//         isAutorized: 'Не авторизирован',
-//         phone: '79803391975'
-//     },
-//   ];
+
 

@@ -3,12 +3,26 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
-import { getAllRequests } from '../services/requests';
-
+import { DeniedRequest, aproveRequest, deniedRequest, getAllRequests } from '../services/requests';
+import { AproveRequestForDays, Mode } from '../components/AproveRequest';
 
 export default function RequestsPage() {
+  const[values, setValues] = useState<Request>({
+    id: "",
+    number: "",
+    date: "",
+    status: "",
+    type: "",
+    fio: "",
+    period: "",
+    description: "",
+  } as unknown as Request);
+
+
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [mode, setMode] = useState(Mode.Aprove);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -20,8 +34,43 @@ export default function RequestsPage() {
     getRequests(); // Вызываем функцию получения заявок
   }, []); // Пустой массив зависимостей
 
-  return <Table columns={columns} dataSource={requests} />; // Подставьте свои данные для таблицы
+  const openAproveRequestModal = () => {
+    debugger;
+    setMode(Mode.Aprove);
+    setModalOpen(true);
+  }
+
+  const openDeniedRequestModal = () => {
+    debugger;
+    setModalOpen(false);
+  }
+
+  const handleAproveRequest = async (id: string)=>{
+    await aproveRequest(id);
+    closeModal();
+
+    debugger;
+    const request = await getAllRequests();
+    setRequests(request);
+};
+
+const handleDeniedRequest = async (id: string, request: DeniedRequest)=>{
+    await deniedRequest(request);
+    closeModal();
+
+    const responce = await getAllRequests();
+    setRequests(responce);
 }
+
+const openModal = () => {
+    setMode(Mode.Aprove);
+    setModalOpen(true);
+};
+
+const closeModal = () => 
+  setModalOpen(false);
+
+
   const columns: TableProps<Request>['columns'] = [
     {
       title: 'Номер',
@@ -65,47 +114,33 @@ export default function RequestsPage() {
         dataIndex: 'actions',
         render: () => (
             <>
-            <Button style= {{backgroundColor:'green', color:'white'}} >Одобрить</Button>
-            <Button style= {{backgroundColor:'red', color:'white'}} >Отказать</Button>
+            <Button style= {{backgroundColor:'green', color:'white'}} onClick={openAproveRequestModal}>Одобрить</Button>
+            <Button style= {{backgroundColor:'red', color:'white'}} onClick={openDeniedRequestModal}>Отказать</Button>
             </>
 
         ),
     },
-  ];
-  
-  // const data: DataType[] = [
-  //   {
-  //     id: '1',
-  //     number: 12323,
-  //     status: 'Рассматривается',
-  //     date: '11.10.2023',
-  //     type: 'Отгул',
-  //     fio: 'Иванов Иван Иванович',
-  //     period: '10.10.2023 - 20.20.2024',
-  //     description: 'Для добавления красной и зеленой кнопок в приложение, использующее Next.js 14.2.2, вы можете создать компоненты кнопок с соответствующими стилями. Вот пример того, как вы можете это сделать:',
-  //   },
-  //   {
-  //     id: '2',
-  //     number: 345645,
-  //     status: 'Закрыто',
-  //     date: '12.10.2023',
-  //     type: 'Отпуск',
-  //     fio: 'Петров Петр Петрович',
-  //     period: '10.10.2023 - 20.20.2024',
-  //     description: 'Для добавления красной и зеленой кнопок в приложение, использующее Next.js 14.2.2, вы можете создать компоненты кнопок с соответствующими стилями. Вот пример того, как вы можете это сделать:',
-  //   },
-  //   {
-  //     id: '3',
-  //     number: 756546,
-  //     date: '13.10.2023',
-  //     status: 'Отказано',
-  //     type: 'Переработка',
-  //     fio: 'Баширов Башир Баширович',
-  //     period: '10.10.2023 - 20.20.2024',
-  //     description: 'Для добавления красной и зеленой кнопок в приложение, использующее Next.js 14.2.2, вы можете создать компоненты кнопок с соответствующими стилями. Вот пример того, как вы можете это сделать:',
-  //   },
-  // ];
+];
 
+  return (
+    <>
+    <AproveRequestForDays
+                mode = {mode}
+                values={values}
+                isModalOpen = {isModalOpen}
+                handleCreate={handleAproveRequest}
+                handleUpdate={handleDeniedRequest}
+                handleCancel={closeModal}
+            />
+  <Table columns={columns} dataSource={requests} /> 
+    </>)
+  
+}
+
+  
+
+
+  
 
 
 

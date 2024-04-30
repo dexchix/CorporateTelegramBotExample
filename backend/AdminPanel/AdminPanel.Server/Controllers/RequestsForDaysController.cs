@@ -135,6 +135,7 @@ namespace AdminPanel.Server.Controllers
         [HttpPut("AproveRequest")]
         public IActionResult Aprove([FromHeader] Guid id)
         {
+            //var guidId = Guid.Parse(id);
             var context = new ServiceBotContext();
             var request = context.RequestsForDays
                 .Where(x => x.Id == id)

@@ -11,9 +11,9 @@ export interface EmployeeRequest{
     department: string,
     phone: string
 }
-export interface AproveRequest{
-    id: string
-}
+// export interface AproveRequest{
+//     id: string
+// }
 export interface DeniedRequest{
     id: string,
     reason: string
@@ -37,13 +37,13 @@ export const createEmployee = async (employeRequest: EmployeeRequest)=>{
     })
 }
 
-export const aproveRequest = async (employeRequest: AproveRequest)=>{
+export const aproveRequest = async (id: string)=>{
     await fetch("http://localhost:5105/RequestsForDays/AproveRequest", {
         method: "PUT",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(employeRequest)
+        body: JSON.stringify(id)
     })
 }
 
