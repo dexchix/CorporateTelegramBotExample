@@ -10,15 +10,26 @@ namespace AdminPanel.Server.Controllers
     {
 
         [HttpGet("GetActiveRequests")]
-        public IEnumerable<RequestsForDays> GetActive()
+        public IActionResult GetActive()
         {
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
                 .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Рассматривается)
+                .Select(x=> new
+                {
+                    Id = x.Id,    
+                    Number = x.Number,
+                    Date = x.CreateDate.ToString("yyyy-mm-dd"),
+                    Status = x.RequestStatus.ToString(),
+                    Type = x.RequestType.ToString(),    
+                    Fio = x.EmployeFullName,
+                    Period = $"{x.StartDate.ToString("yyyy-mm-dd")} - {x.EndDate.ToString("yyyy-mm-dd")}",
+                    Description = x.Description,
+                })
                 .ToArray();
 
             if (requests.Length > 0)
-                return requests;
+                return Ok(requests);
             else
                 return null;
         }

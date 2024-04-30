@@ -31,18 +31,17 @@ namespace AdminPanel.Server
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseAuthorization();
 
 
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.MapControllers();
 
-            app.MapFallbackToFile("/index.html");
+            app.UseCors(x=>
+            {
+                x.WithHeaders().AllowAnyHeader();
+                x.WithOrigins("http://localhost:3000");
+                x.WithMethods().AllowAnyMethod();
+            });
 
             app.Run();
         }

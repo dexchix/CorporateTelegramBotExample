@@ -66,15 +66,16 @@ namespace ServiseBot.TelegramCommands
             var context = new ServiceBotContext();
             if (update.Message.Text == "Подтвердить")
             {
+                var employe = context.Employes.FirstOrDefault(x => x.TelegramId == update.Message.From.Id);
                 var id = Guid.NewGuid();
                 var indcidentReport = new IncidentReport()
                 {
                     Id = id,
                     Description = update.GetCacheData<OperationCache>().Description,
-                    EmployeId = update.GetCacheData<OperationCache>().EmployeId,
                     IncidentDate = DateTime.UtcNow,
                     Number = Helper.GuidToInt(id),
-                    TelegramChatId = update.Message.Chat.Id
+                    TelegramChatId = update.Message.Chat.Id,
+                    Employe = employe
                 };
                 context.IncidentReports.Add(indcidentReport);
                 context.SaveChanges();

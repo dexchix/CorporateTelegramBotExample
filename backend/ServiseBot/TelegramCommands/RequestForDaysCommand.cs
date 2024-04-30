@@ -84,6 +84,7 @@ namespace ServiseBot.TelegramCommands
             var context = new ServiceBotContext();
             if (update.Message.Text == "Подтвердить")
             {
+                var employe = context.Employes.FirstOrDefault(x => x.TelegramId == update.Message.From.Id);
                 var id = Guid.NewGuid();
                 var request = new RequestsForDays()
                 {
@@ -96,7 +97,8 @@ namespace ServiseBot.TelegramCommands
                     Number = Helper.GuidToInt(id),
                     RequestStatus = DAL.Models.Enums.RequestStatus.Рассматривается,
                     RequestType = update.GetCacheData<OperationCache>().Operation,
-                    TelegramChatId = update.Message.Chat.Id
+                    TelegramChatId = update.Message.Chat.Id,
+                    Employee = employe
                 };
                 context.RequestsForDays.Add(request);
                 context.SaveChanges();
