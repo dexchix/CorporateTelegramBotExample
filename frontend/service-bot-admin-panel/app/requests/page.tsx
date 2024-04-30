@@ -6,9 +6,6 @@ import type { TableProps } from 'antd';
 import { getAllRequests } from '../services/requests';
 
 
-
-
-
 export default function RequestsPage() {
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);

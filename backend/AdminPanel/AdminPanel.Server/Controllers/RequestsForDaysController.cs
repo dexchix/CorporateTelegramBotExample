@@ -39,6 +39,17 @@ namespace AdminPanel.Server.Controllers
         {
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Number = x.Number,
+                    Date = x.CreateDate.ToString("yyyy-mm-dd"),
+                    Status = x.RequestStatus.ToString(),
+                    Type = x.RequestType.ToString(),
+                    Fio = x.EmployeFullName,
+                    Period = $"{x.StartDate.ToString("yyyy-mm-dd")} - {x.EndDate.ToString("yyyy-mm-dd")}",
+                    Description = x.Description,
+                })
                 .ToArray();
 
             if (requests.Length > 0)
@@ -52,6 +63,17 @@ namespace AdminPanel.Server.Controllers
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
                 .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Закрыто)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Number = x.Number,
+                    Date = x.CreateDate.ToString("yyyy-mm-dd"),
+                    Status = x.RequestStatus.ToString(),
+                    Type = x.RequestType.ToString(),
+                    Fio = x.EmployeFullName,
+                    Period = $"{x.StartDate.ToString("yyyy-mm-dd")} - {x.EndDate.ToString("yyyy-mm-dd")}",
+                    Description = x.Description,
+                })
                 .ToArray();
 
             if (requests.Length > 0)
@@ -65,6 +87,17 @@ namespace AdminPanel.Server.Controllers
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
                 .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Одобрено)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Number = x.Number,
+                    Date = x.CreateDate.ToString("yyyy-mm-dd"),
+                    Status = x.RequestStatus.ToString(),
+                    Type = x.RequestType.ToString(),
+                    Fio = x.EmployeFullName,
+                    Period = $"{x.StartDate.ToString("yyyy-mm-dd")} - {x.EndDate.ToString("yyyy-mm-dd")}",
+                    Description = x.Description,
+                })
                 .ToArray();
 
             if (requests.Length > 0)
@@ -79,6 +112,17 @@ namespace AdminPanel.Server.Controllers
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
                 .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Неодобрено)
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Number = x.Number,
+                    Date = x.CreateDate.ToString("yyyy-mm-dd"),
+                    Status = x.RequestStatus.ToString(),
+                    Type = x.RequestType.ToString(),
+                    Fio = x.EmployeFullName,
+                    Period = $"{x.StartDate.ToString("yyyy-mm-dd")} - {x.EndDate.ToString("yyyy-mm-dd")}",
+                    Description = x.Description,
+                })
                 .ToArray();
 
             if (requests.Length > 0)
