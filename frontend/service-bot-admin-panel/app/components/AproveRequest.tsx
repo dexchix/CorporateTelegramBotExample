@@ -38,23 +38,39 @@ useEffect(() => {
 
         mode === Mode.Aprove ? handleCreate(aproveRequest) : handleUpdate(values.id, aproveRequest)
     }
-    // debugger;
-    return (
-    <>
-        <Modal 
-            title={mode === Mode.Aprove ? "Подтверждение" : "Отказ"}
-            open={isModalOpen} 
-            cancelText={"Отмена"}
-            onOk={handleOnOk}
-            onCancel={handleCancel}
-        >
-                <div className="book_modal">
-                    <TextArea style={{margin: 10}}
-                        value={reason}
-                        onChange={(e) => setReason(e.target.value)}
-                        placeholder="Логин"
-                    />
-                </div>
-        </Modal> 
-    </>)
+        if(mode === Mode.Denied){
+        return(
+        <>
+            <Modal 
+                title= "Отказ"
+                open={isModalOpen} 
+                cancelText={"Отмена"}
+                onOk={handleOnOk}
+                onCancel={handleCancel}
+            >
+                    <div className="book_modal">
+                        <TextArea style={{margin: 10}}
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            placeholder="Дополнительная информация"
+                        />
+                    </div>
+            </Modal> 
+        </>)
+        }
+        else{
+            return(
+            <>
+            <Modal 
+                title= "Подтверждение"
+                open={isModalOpen} 
+                cancelText={"Отмена"}
+                onOk={handleOnOk}
+                onCancel={handleCancel}
+            >
+            </Modal> 
+        </>)
+
+        }
+    
 };

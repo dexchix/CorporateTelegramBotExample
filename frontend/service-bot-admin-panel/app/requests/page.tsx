@@ -42,7 +42,8 @@ export default function RequestsPage() {
 
   const openDeniedRequestModal = () => {
     debugger;
-    setModalOpen(false);
+    setMode(Mode.Denied);
+    setModalOpen(true);
   }
 
   const handleAproveRequest = async (id: string)=>{
@@ -131,7 +132,7 @@ const closeModal = () =>
                 handleCreate={handleAproveRequest}
                 handleUpdate={handleDeniedRequest}
                 handleCancel={closeModal}
-            />
+    />
   <Table columns={columns} dataSource={requests} /> 
     </>)
   

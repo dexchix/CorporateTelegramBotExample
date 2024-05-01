@@ -48,6 +48,7 @@ export const aproveRequest = async (id: string)=>{
 }
 
 export const deniedRequest = async (employeRequest: DeniedRequest)=>{
+    debugger;
     await fetch("http://localhost:5105/RequestsForDays/DeniedRequests", {
         method: "PUT",
         headers: {
