@@ -11,10 +11,7 @@ export interface EmployeeRequest{
     department: string,
     phone: string
 }
-// export interface AproveRequest{
-//     id: string
-// }
-export interface DeniedRequest{
+export interface UpdateRequest{
     id: string,
     reason: string
 }
@@ -37,39 +34,33 @@ export const createEmployee = async (employeRequest: EmployeeRequest)=>{
     })
 }
 
-export const aproveRequest = async (id: string)=>{
+export const aproveRequest = async (request: UpdateRequest)=>{
+    debugger;
+    const requestFixed = {id: request.id}
     await fetch("http://localhost:5105/RequestsForDays/AproveRequest", {
         method: "PUT",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(id)
+        body: JSON.stringify(requestFixed)
     })
 }
 
-export const deniedRequest = async (employeRequest: DeniedRequest)=>{
-    debugger;
+export const deniedRequest = async (request: UpdateRequest)=>{
+  
+    const requestFixed = {id: request.id, reason: request.reason}
     await fetch("http://localhost:5105/RequestsForDays/DeniedRequests", {
         method: "PUT",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(employeRequest)
+        body: JSON.stringify(requestFixed)
     })
 }
 export const getAllEmployes = async () => {
+    debugger;
+
     const response = await fetch("http://localhost:5105/Employee/GetEmployes")
     const result = await response.json();
-    debugger;
     return result;
 }
-
-
-// interface DataType {
-//     id: string;
-//     login: string;
-//     fullName: string;
-//     department: string;
-//     isAutorized: string;
-//     phone: string;
-//   }

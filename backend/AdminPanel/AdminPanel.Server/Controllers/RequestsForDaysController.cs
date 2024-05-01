@@ -1,6 +1,8 @@
-﻿using DAL;
-using DAL.Models;
+﻿using AdminPanel.Server.Models;
+using DAL;
 using Microsoft.AspNetCore.Mvc;
+using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace AdminPanel.Server.Controllers
 {
@@ -133,31 +135,41 @@ namespace AdminPanel.Server.Controllers
 
 
         [HttpPut("AproveRequest")]
-        public IActionResult Aprove([FromHeader] Guid id)
+        public async Task<IActionResult> Aprove([FromBody] AprovedRequest id)
         {
-            //var guidId = Guid.Parse(id);
+            var guidId = Guid.Parse(id.Id);
             var context = new ServiceBotContext();
             var request = context.RequestsForDays
-                .Where(x => x.Id == id)
+                .Where(x => x.Id == guidId)
                 .FirstOrDefault();
             request.RequestStatus = DAL.Models.Enums.RequestStatus.Одобрено;
-            context.RequestsForDays.Add(request);
+            context.SaveChanges();
+
+
+            //==========================
+
+            var telegramBot = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
+            var chatId = new ChatId(request.TelegramChatId);
+            await telegramBot.SendTextMessageAsync(chatId, $"Ваша заявка #{request.Number} одобрена." );
+
+            //==========================
+
 
             return Ok();
         }
 
         [HttpPut("DeniedRequests")]
         public IActionResult Denied(
-            [FromHeader] Guid id,
-            [FromHeader] string reason)
+            [FromBody] DeniedRequest deniedRequest)
         {
+            var deniedId = Guid.Parse(deniedRequest.Id);    
             var context = new ServiceBotContext();
             var request = context.RequestsForDays
-                .Where(x => x.Id == id)
+                .Where(x => x.Id == deniedId)
                 .FirstOrDefault();
             request.RequestStatus = DAL.Models.Enums.RequestStatus.Закрыто;
-            request.Responce = reason;
-            context.RequestsForDays.Add(request);
+            request.Responce = deniedRequest.Reason;
+            context.SaveChanges();
 
             return Ok();
         }

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Space, Table, Tag } from 'antd';
 import type { TableProps } from 'antd';
-import { DeniedRequest, aproveRequest, deniedRequest, getAllRequests } from '../services/requests';
+import { UpdateRequest, aproveRequest, deniedRequest, getAllRequests } from '../services/requests';
 import { AproveRequestForDays, Mode } from '../components/AproveRequest';
 
 export default function RequestsPage() {
@@ -23,6 +23,8 @@ export default function RequestsPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
   const [mode, setMode] = useState(Mode.Aprove);
+  const [id, setId] = useState<string>("324234234");
+
 
   useEffect(() => {
     const getRequests = async () => {
@@ -34,28 +36,32 @@ export default function RequestsPage() {
     getRequests(); // Вызываем функцию получения заявок
   }, []); // Пустой массив зависимостей
 
-  const openAproveRequestModal = () => {
+  const openAproveRequestModal = (request: Request) => {
     debugger;
     setMode(Mode.Aprove);
+    setId(request.id);
     setModalOpen(true);
   }
 
-  const openDeniedRequestModal = () => {
+  const openDeniedRequestModal = (request: Request) => {
     debugger;
     setMode(Mode.Denied);
+    setId(request.id);
     setModalOpen(true);
   }
 
-  const handleAproveRequest = async (id: string)=>{
-    await aproveRequest(id);
+  const handleAproveRequest = async ( request: UpdateRequest)=>{
+    debugger;
+    await aproveRequest(request);
     closeModal();
 
-    debugger;
-    const request = await getAllRequests();
-    setRequests(request);
+   
+    const response = await getAllRequests();
+    setRequests(response);
 };
 
-const handleDeniedRequest = async (id: string, request: DeniedRequest)=>{
+const handleDeniedRequest = async (request: UpdateRequest)=>{
+    debugger;
     await deniedRequest(request);
     closeModal();
 
@@ -113,10 +119,10 @@ const closeModal = () =>
         title: '',
         key: 'actions',
         dataIndex: 'actions',
-        render: () => (
+        render: (text, record) => (
             <>
-            <Button style= {{backgroundColor:'green', color:'white'}} onClick={openAproveRequestModal}>Одобрить</Button>
-            <Button style= {{backgroundColor:'red', color:'white'}} onClick={openDeniedRequestModal}>Отказать</Button>
+            <Button style= {{backgroundColor:'green', color:'white'}} onClick={() => openAproveRequestModal(record)}>Одобрить</Button>
+            <Button style= {{backgroundColor:'red', color:'white'}} onClick={() =>openDeniedRequestModal((record))}>Отказать</Button>
             </>
 
         ),
@@ -127,6 +133,7 @@ const closeModal = () =>
     <>
     <AproveRequestForDays
                 mode = {mode}
+                id = {id}
                 values={values}
                 isModalOpen = {isModalOpen}
                 handleCreate={handleAproveRequest}

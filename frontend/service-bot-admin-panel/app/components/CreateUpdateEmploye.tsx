@@ -34,7 +34,7 @@ export const CreateUpdateEmploye = ({
     const[phone, setPhone] = useState<string>("");
 
 useEffect(() => {
-     setId(values.login);
+    setLogin(values.login);
      setFullName(values.fullName);
      setDepartment(values.department);
      setPhone(values.phone);

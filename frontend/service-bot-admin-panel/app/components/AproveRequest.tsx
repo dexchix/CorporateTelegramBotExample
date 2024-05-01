@@ -1,16 +1,18 @@
 import Modal from "antd/es/modal/Modal";
-import { AproveRequest } from "../services/requests";
+import { UpdateRequest, deniedRequest } from "../services/requests";
 import { useEffect, useState } from "react";
 import Input from "antd/es/input/Input";
 import TextArea from "antd/es/input/TextArea";
+import { UpdateMessage } from "next/dist/build/swc";
 
 interface Props{
     mode: Mode;
+    id: string;
     values: Request;
     isModalOpen: boolean;
     handleCancel: ()=> void;
-    handleCreate: (request: AproveRequest) => void;
-    handleUpdate: (id: string, request: AproveRequest) => void;
+    handleCreate: (aproveRequest: UpdateRequest) => void;
+    handleUpdate: (deniedRequest: UpdateRequest) => void;
 }
 
 export enum Mode{
@@ -20,23 +22,24 @@ export enum Mode{
 
 export const AproveRequestForDays = ({
     mode,
+    id,
     values,
     isModalOpen,
     handleCancel,
     handleCreate,
     handleUpdate,
 }: Props) => {
-    const[id, setId] = useState<string>("");
     const[reason, setReason] = useState<string>("");
 
 useEffect(() => {
-     setId(values.id);
+ 
 }, [values])
 
     const handleOnOk = async () => {
-        const aproveRequest = {id};
+        debugger;
+        const deniedRequest = {id, reason}
 
-        mode === Mode.Aprove ? handleCreate(aproveRequest) : handleUpdate(values.id, aproveRequest)
+        mode === Mode.Aprove ? handleCreate(deniedRequest) : handleUpdate(deniedRequest)
     }
         if(mode === Mode.Denied){
         return(
