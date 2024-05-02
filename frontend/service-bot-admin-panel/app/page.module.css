@@ -228,3 +228,23 @@
     transform: rotate(0deg);
   }
 }
+
+.authorization {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.authorization-inner {
+  text-align: center;
+}
+
+.authorization-input {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.authorization-button {
+  width: 200px;
+}

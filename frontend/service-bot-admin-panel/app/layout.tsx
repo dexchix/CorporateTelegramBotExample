@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Link from "next/link";
 
@@ -18,19 +18,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Layout style={{minHeight: "100hv"}}>
-          <Header>
+        <Layout style={{ minHeight: "100hv" }}>
+          <Header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <Menu 
-               theme="dark" 
-               mode="horizontal" 
-               items = {items} 
-               style = {{flex: 1, minValue: 0}}/>
-           </Header>
-           <Content style={{padding: "0 48px"}}>{children}</Content>
-           <Footer style={{textAlign: "center"}}>
-              Service bot admin panel. Created by Denis Bubalo
-           </Footer>
-      </Layout>
+              theme="dark" 
+              mode="horizontal" 
+              items={items} 
+              style={{ flex: 1, minWidth: 0 }}
+            />
+            <Button>Бубало Д.А.</Button>
+          </Header>
+          <Content style={{ padding: "0 48px" }}>{children}</Content>
+          <Footer style={{ textAlign: "center", position: "fixed", bottom: 0, width: "100%" }}>
+            Service bot admin panel. Created by Denis Bubalo
+          </Footer>
+        </Layout>
       </body>
     </html>
   );
