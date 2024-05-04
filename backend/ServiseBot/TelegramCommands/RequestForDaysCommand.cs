@@ -81,6 +81,7 @@ namespace ServiseBot.TelegramCommands
 
         public static async Task CreateReceivingRequest(ITelegramBotClient botClient, Update update, CustomParameters args)
         {
+            //496929963
             var context = new ServiceBotContext();
             if (update.Message.Text == "Подтвердить")
             {
@@ -98,7 +99,8 @@ namespace ServiseBot.TelegramCommands
                     RequestStatus = DAL.Models.Enums.RequestStatus.Рассматривается,
                     RequestType = update.GetCacheData<OperationCache>().Operation,
                     TelegramChatId = update.Message.Chat.Id,
-                    Employee = employe
+                    Employee = employe,
+                    EmployeFullName = employe.FullName
                 };
                 context.RequestsForDays.Add(request);
                 context.SaveChanges();

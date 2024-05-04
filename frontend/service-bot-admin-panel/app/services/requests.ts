@@ -64,3 +64,8 @@ export const getAllEmployes = async () => {
     const result = await response.json();
     return result;
 }
+export const getIncidents = async () => {
+    const response = await fetch("http://localhost:5105/Incident/GetIncidents")
+    const result = await response.json();
+    return result;
+}

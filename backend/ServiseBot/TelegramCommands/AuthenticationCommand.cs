@@ -68,8 +68,9 @@ namespace ServiseBot.TelegramCommands
                 await PRTelegramBot.Helpers.Message.Send(botClient, update, message);
             }
             update.GetCacheData<OperationCache>().Login = update.Message.Text;
-            employe.TelegramId = update.Id;
+            employe.TelegramId = update.Message.From.Id;
             employe.TelegramLogin = update.Message.Chat.Username;
+            employe.IsAutorized = true;
             await context.SaveChangesAsync();
 
 

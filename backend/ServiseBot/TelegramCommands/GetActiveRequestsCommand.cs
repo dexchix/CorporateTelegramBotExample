@@ -21,7 +21,15 @@ namespace ServiseBot.TelegramCommands
                 .Where(x => x.TelegramChatId == update.Message.Chat.Id)
                 .ToArray();
 
-            StringBuilder response = new StringBuilder(@"Список заявок находящихся в рассмотрении:");
+            StringBuilder response = new StringBuilder();
+            if (activeRequests.Count() == 0)
+            {
+                response = response.Append("У Вас нет активных заявок");
+                await PRTelegramBot.Helpers.Message.Send(botClient, update, response.ToString());
+                return;
+            } 
+
+            response = new StringBuilder(@"Список заявок находящихся в рассмотрении:");
             foreach (var request in activeRequests)
             {
                 response.Append(@$"

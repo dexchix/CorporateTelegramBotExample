@@ -1,6 +1,7 @@
 ﻿using AdminPanel.Server.Models;
 using DAL;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -17,6 +18,7 @@ namespace AdminPanel.Server.Controllers
             var context = new ServiceBotContext();
             var requests = context.RequestsForDays
                 .Where(x => x.RequestStatus == DAL.Models.Enums.RequestStatus.Рассматривается)
+                .Include(x=> x.Employee)
                 .Select(x=> new
                 {
                     Id = x.Id,    
@@ -145,21 +147,15 @@ namespace AdminPanel.Server.Controllers
             request.RequestStatus = DAL.Models.Enums.RequestStatus.Одобрено;
             context.SaveChanges();
 
-
-            //==========================
-
             var telegramBot = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
             var chatId = new ChatId(request.TelegramChatId);
             await telegramBot.SendTextMessageAsync(chatId, $"Ваша заявка #{request.Number} одобрена." );
-
-            //==========================
-
 
             return Ok();
         }
 
         [HttpPut("DeniedRequests")]
-        public IActionResult Denied(
+        public async Task<IActionResult> Denied(
             [FromBody] DeniedRequest deniedRequest)
         {
             var deniedId = Guid.Parse(deniedRequest.Id);    
@@ -167,8 +163,13 @@ namespace AdminPanel.Server.Controllers
             var request = context.RequestsForDays
                 .Where(x => x.Id == deniedId)
                 .FirstOrDefault();
-            request.RequestStatus = DAL.Models.Enums.RequestStatus.Закрыто;
+            request.RequestStatus = DAL.Models.Enums.RequestStatus.Неодобрено;
             request.Responce = deniedRequest.Reason;
+
+            var telegramBot = new TelegramBotClient("6858392505:AAHXlxagKKKFiZE0N5XUGbRwTnYxJa6Az-A");
+            var chatId = new ChatId(request.TelegramChatId);
+            await telegramBot.SendTextMessageAsync(chatId, $"Ваша заявка #{request.Number} не одобрена. \n Причина: {deniedRequest.Reason}");
+
             context.SaveChanges();
 
             return Ok();

@@ -18,7 +18,7 @@ namespace AdminPanel.Server.Controllers
                 Login = x.Login,
                 FullName = x.FullName,
                 Department = x.Department,
-                IsAutorized = x.IsAutorized,
+                IsAutorized = x.IsAutorized ? "Авторизован" : "Не авторизован",
                 Phone = x.Phone,
             }).ToArray();
             return Ok(result);
@@ -49,6 +49,7 @@ namespace AdminPanel.Server.Controllers
                     FullName = employeRequest.FullName,
                     Login = employeRequest.Login,
                     Phone = employeRequest.Phone,
+                    IsAutorized = false
                 };
                 context.Add(newEmploye);
             }

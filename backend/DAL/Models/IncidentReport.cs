@@ -7,7 +7,7 @@ namespace DAL.Models
         public Guid Id { get; set; }
         public int? Number { get; set; }
         public long? TelegramChatId { get; set; }
-        public DateTime? IncidentDate { get; set; }
+        public DateTime IncidentDate { get; set; }
         public string? Description { get; set; }
         public Guid? EmployeId { get; set; } 
         public virtual Employe? Employe { get; set; }

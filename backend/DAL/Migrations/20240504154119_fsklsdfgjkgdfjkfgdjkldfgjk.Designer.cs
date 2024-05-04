@@ -3,6 +3,7 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ServiceBotContext))]
-    partial class ServiceBotContextModelSnapshot : ModelSnapshot
+    [Migration("20240504154119_fsklsdfgjkgdfjkfgdjkldfgjk")]
+    partial class fsklsdfgjkgdfjkfgdjkldfgjk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +72,7 @@ namespace DAL.Migrations
                     b.Property<Guid?>("EmployeId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("IncidentDate")
+                    b.Property<DateTime?>("IncidentDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("Number")
