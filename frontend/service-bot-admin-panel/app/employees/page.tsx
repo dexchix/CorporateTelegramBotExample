@@ -1,94 +1,130 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Button, Space, Table, Tag } from 'antd';
-import type { TableProps } from 'antd';
+import { Button, Table, Select, Input } from 'antd';
 import { EmployeeRequest, createEmployee, getAllEmployes } from '../services/requests';
 import { CreateUpdateEmploye, Mode } from '../components/CreateUpdateEmploye';
-import { open } from 'fs/promises';
 
-export default function EmployeesPage(){
-    const[values, setValues] = useState<Employee>({
+const { Option } = Select;
+
+export default function EmployeesPage() {
+    const [values, setValues] = useState<Employee>({
         id: "",
         login: "",
         fullName: "",
         department: "",
         isAutorized: "",
         phone: "",
-} as Employee);
+    });
 
     const [employes, setEmployes] = useState<Employee[]>([]);
+    const [filteredEmployes, setFilteredEmployes] = useState<Employee[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
     const [mode, setMode] = useState(Mode.Create);
+    const [searchValue, setSearchValue] = useState("");
+    const [departmentFilter, setDepartmentFilter] = useState("");
+    const [authorizedFilter, setAuthorizedFilter] = useState("");
 
     useEffect(() => {
-        const getEmployes = async () => {
-          const employes = await getAllEmployes();
-          setLoading(false);
-          setEmployes(employes);
-        };
-    
-        getEmployes(); // Вызываем функцию получения заявок
-      }, []); // Пустой массив зависимостей
-
-
-        const handleCreateEmploye = async (request: EmployeeRequest) => {
-            await createEmployee(request);
-            closeModal();
-
-            const employes = await getAllEmployes();
-            setEmployes(employes);
+        const fetchEmployes = async () => {
+            const employesData = await getAllEmployes();
+            setEmployes(employesData);
+            setFilteredEmployes(employesData);
+            setLoading(false);
         };
 
-        const handleUpdateEmploye = async (id: string, request: EmployeeRequest)=>{
-            await createEmployee(request);
-            closeModal();
+        fetchEmployes();
+    }, []);
 
-            debugger;
-            const employes = await getAllEmployes();
-            setEmployes(employes);
-        };
+    const filterEmployes = () => {
+        let filteredData = employes;
 
-        const handleDeleteEmployee = async (id: string, request: EmployeeRequest)=>{
-            await createEmployee(request);
-            closeModal();
-
-            const employes = await getAllEmployes();
-            setEmployes(employes);
+        if (searchValue) {
+            filteredData = filteredData.filter(employee => 
+                employee.fullName.toLowerCase().includes(searchValue.toLowerCase())
+            );
         }
 
-        const openModal = () => {
-            setMode(Mode.Create);
-            setModalOpen(true);
-        };
-
-        const closeModal = () => 
-          setModalOpen(false);
-
-        const openEditModal = (employee: Employee) => {
-            setMode(Mode.Edit);
-            setValues(employee);
-            setModalOpen(true);
+        if (departmentFilter) {
+            filteredData = filteredData.filter(employee => 
+                employee.department.toLowerCase().includes(departmentFilter.toLowerCase())
+            );
         }
-   
+
+        if (authorizedFilter) {
+            filteredData = filteredData.filter(employee => employee.isAutorized === authorizedFilter);
+        }
+
+        setFilteredEmployes(filteredData);
+    };
+
+    const handleCreateEmploye = async (request: EmployeeRequest) => {
+        await createEmployee(request);
+        closeModal();
+        const employesData = await getAllEmployes();
+        setEmployes(employesData);
+        setFilteredEmployes(employesData);
+    };
+
+    const openModal = () => {
+        setMode(Mode.Create);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setValues({
+            id: "",
+            login: "",
+            fullName: "",
+            department: "",
+            isAutorized: "",
+            phone: "",
+        });
+    };
+
+    const openEditModal = (employee: Employee) => {
+        setMode(Mode.Edit);
+        setValues(employee);
+        setModalOpen(true);
+    };
 
     return (
         <div>
-            <Button style={{margin: 10}} onClick={openModal}>Добавить сотрудника</Button>
+            <div style={styles.filterContainer}>
+                <Input placeholder="Поиск по ФИО" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} style={{ width: 200 }} />
+                <Input placeholder="Фильтр по отделу" value={departmentFilter} onChange={(e) => setDepartmentFilter(e.target.value)} style={{ width: 200 }} />
+                <Select placeholder="Фильтр по авторизации" style={{ width: 200 }} onChange={(value) => setAuthorizedFilter(value)}>
+                    <Option value="">Все</Option>
+                    <Option value="Да">Да</Option>
+                    <Option value="Нет">Нет</Option>
+                </Select>
+                <Button style={{ margin: 10 }} onClick={filterEmployes}>Применить фильтры</Button>
+                <Button style={{ margin: 10 }} onClick={openModal}>Добавить сотрудника</Button>
+            </div>
             <CreateUpdateEmploye
-                mode = {mode}
+                mode={mode}
                 values={values}
-                isModalOpen = {isModalOpen}
+                isModalOpen={isModalOpen}
                 handleCreate={handleCreateEmploye}
-                handleUpdate={handleUpdateEmploye}
                 handleCancel={closeModal}
             />
-            <Table columns={columns} dataSource={employes}/>
-        </div>);
+            <Table columns={columns} dataSource={filteredEmployes} loading={loading} />
+        </div>
+    );
 }
 
-  const columns: TableProps<Employee>['columns'] = [
+const styles = {
+    filterContainer: {
+        marginBottom: '20px',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '10px',
+    }
+};
+
+const columns = [
     {
         title: 'Логин',
         dataIndex: 'login',
@@ -114,7 +150,4 @@ export default function EmployeesPage(){
         dataIndex: 'phone',
         key: 'phone',
     }
-  ];
-
-
-
+];

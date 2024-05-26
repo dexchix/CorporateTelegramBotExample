@@ -7,7 +7,9 @@ const items = [
   {key: "Заявки", label: <Link href={"/requests"}>Заявки</Link>}, 
   {key: "Инциденты", label: <Link href={"/incidents"}>Инциденты</Link>}, 
   {key: "Сотрудники", label: <Link href={"/employees"}>Работники</Link>}, 
-  {key: "Новости и мероприятия", label: <Link href={"/events"}>Новости и мероприятия</Link>}, 
+  {key: "Новости и мероприятия", label: <Link href={"/events"}>Новости и мероприятия</Link>},
+  {key: "Аналитика", label: <Link href={"/analytics"}>Аналитика</Link>},  
+  {key: "Отчеты", label: <Link href={"/reports"}>Отчеты</Link>},  
 ]
 
 export default function RootLayout({
