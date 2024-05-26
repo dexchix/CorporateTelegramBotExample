@@ -1,67 +1,40 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { Table, Select, Input, Button } from 'antd';
-import { getAllRequests } from '../services/requests';
+import { getIncidents } from '../services/requests';
 
 const { Option } = Select;
 
-export default function RequestsPage() {
-  const [values, setValues] = useState<Request>({
+export default function IncidentsPage() {
+  const [values, setValues] = useState<Incident>({
     id: "",
     number: "",
     date: "",
-    status: "",
-    type: "",
     fio: "",
-    period: "",
     description: "",
-  } as Request);
+  } as Incident);
 
-  const [requests, setRequests] = useState<Request[]>([]);
-  const [filteredRequests, setFilteredRequests] = useState<Request[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const [statusFilter, setStatusFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
-  const [fioFilter, setFioFilter] = useState('');
-  const [periodFilter, setPeriodFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [filteredIncidents, setFilteredIncidents] = useState<Incident[]>([]);
 
   useEffect(() => {
-    const getRequests = async () => {
-      const requests = await getAllRequests();
-      setLoading(false);
-      setRequests(requests);
-      setFilteredRequests(requests);
+    const fetchIncidents = async () => {
+      const incidentsData = await getIncidents();
+      setIncidents(incidentsData);
+      setFilteredIncidents(incidentsData);
     };
 
-    getRequests();
+    fetchIncidents();
   }, []);
 
-  useEffect(() => {
-    let filtered = [...requests];
-
-    if (statusFilter) {
-      filtered = filtered.filter(request => request.status === statusFilter);
-    }
-
-    if (typeFilter) {
-      filtered = filtered.filter(request => request.type === typeFilter);
-    }
-
-    if (fioFilter) {
-      filtered = filtered.filter(request => request.fio.toLowerCase().includes(fioFilter.toLowerCase()));
-    }
-
-    if (periodFilter) {
-      filtered = filtered.filter(request => request.period.toLowerCase().includes(periodFilter.toLowerCase()));
-    }
-
-    if (dateFilter) {
-      filtered = filtered.filter(request => request.date.toLowerCase().includes(dateFilter.toLowerCase()));
-    }
-
-    setFilteredRequests(filtered);
-  }, [statusFilter, typeFilter, fioFilter, periodFilter, dateFilter, requests]);
+  const filterIncidents = () => {
+    const filtered = incidents.filter(incident => {
+      return incident.fio.toLowerCase().includes(values.fio.toLowerCase()) &&
+             incident.date.includes(values.date);
+    });
+    setFilteredIncidents(filtered);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
     setValues({ ...values, [key]: e.target.value });
@@ -80,59 +53,33 @@ export default function RequestsPage() {
       key: 'date',
     },
     {
-      title: 'Статус',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
-      title: 'Тип',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
       title: 'ФИО',
       dataIndex: 'fio',
       key: 'fio',
     },
     {
-      title: 'Период',
-      dataIndex: 'period',
-      key: 'period',
-    },
-    {
-      title: 'Обоснование',
+      title: 'Описание',
       dataIndex: 'description',
       key: 'description',
-    },
+    }
   ];
 
   return (
     <>
       <div style={styles.filterContainer}>
-        <Input placeholder="Дата" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} style={{ width: 200 }} />
-        <Select defaultValue="" style={{ width: 200 }} placeholder="Статус" onChange={(value) => setStatusFilter(value)}>
-          <Option value="Одобрено">Одобрено</Option>
-          <Option value="На рассмотрении">На рассмотрении</Option>
-          <Option value="Отклонено">Отклонено</Option>
-        </Select>
-        <Select defaultValue="" style={{ width: 200 }} placeholder="Тип" onChange={(value) => setTypeFilter(value)}>
-          <Option value="Отпуск">Отпуск</Option>
-          <Option value="Больничный">Больничный</Option>
-          <Option value="Отгул">Отгул</Option>
-        </Select>
-        <Input placeholder="ФИО" value={fioFilter} onChange={(e) => setFioFilter(e.target.value)} style={{ width: 200 }} />
-        <Input placeholder="Период" value={periodFilter} onChange={(e) => setPeriodFilter(e.target.value)} style={{ width: 200 }} />
-        <Button style={{ margin: 10 }} onClick={() => setFilteredRequests(requests)}>Применить фильтры</Button>
+        <Input placeholder="ФИО" value={values.fio} onChange={(e) => handleInputChange(e, 'fio')} style={{ width: 200 }} />
+        <Input placeholder="Дата" value={values.date} onChange={(e) => handleInputChange(e, 'date')} style={{ width: 200 }} />
+        <Button  onClick={filterIncidents}>Применить фильтры</Button>
       </div>
-      <Table columns={columns} dataSource={filteredRequests} loading={loading} style={{ width: '100%', textAlign: 'center' }} />
+      <Table columns={columns} dataSource={filteredIncidents} />
     </>
   );
 }
 
 const styles = {
   filterContainer: {
-    marginTop: '20px',
     marginBottom: '20px',
+    marginTop: '20px',
     display: 'flex',
     justifyContent: 'center',
     gap: '10px',

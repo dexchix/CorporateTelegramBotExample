@@ -167,19 +167,19 @@ export default function RequestsPage() {
       />
       <div style={styles.filterContainer}>
         <Input placeholder="Дата" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} style={{ width: 200 }} />
-        <Select defaultValue="" style={{ width: 200 }} placeholder="Статус" onChange={(value) => setStatusFilter(value)}>
+        <Select defaultValue="" style={{ width: 200, height: 50 }} placeholder="Статус" onChange={(value) => setStatusFilter(value)}>
           <Option value="Одобрено">Одобрено</Option>
           <Option value="На рассмотрении">На рассмотрении</Option>
           <Option value="Отклонено">Отклонено</Option>
         </Select>
-        <Select defaultValue="" style={{ width: 200 }} placeholder="Тип" onChange={(value) => setTypeFilter(value)}>
+        <Select defaultValue="" style={{ width: 200 , height: 50 }} placeholder="Тип" onChange={(value) => setTypeFilter(value)}>
           <Option value="Отпуск">Отпуск</Option>
           <Option value="Больничный">Больничный</Option>
           <Option value="Отгул">Отгул</Option>
         </Select>
         <Input placeholder="ФИО" value={fioFilter} onChange={(e) => setFioFilter(e.target.value)} style={{ width: 200 }} />
         <Input placeholder="Период" value={periodFilter} onChange={(e) => setPeriodFilter(e.target.value)} style={{ width: 200 }} />
-        <Button style={{ margin: 10 }} onClick={() => setFilteredRequests(requests)}>Применить фильтры</Button>
+        <Button style={{ margin: 10  }} onClick={() => setFilteredRequests(requests)}>Применить фильтры</Button>
       </div>
       <Table columns={columns} dataSource={filteredRequests} loading={loading} style={{ width: '100%', textAlign: 'center' }} />
     </>

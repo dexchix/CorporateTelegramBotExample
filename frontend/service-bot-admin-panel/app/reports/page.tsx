@@ -20,64 +20,43 @@ export default function ReportsPage() {
       <h1 style={styles.title}>Отчеты</h1>
       <div style={styles.buttonContainer}>
         <Button type="primary" onClick={() => generatePDFReport(1)} style={styles.button}>
-          PDF Отчет 1
+          Список сотрудников в Exel
         </Button>
         <Button type="primary" onClick={() => generatePDFReport(2)} style={styles.button}>
-          PDF Отчет 2
+          Список активных заявок в Exel
         </Button>
         <Button type="primary" onClick={() => generatePDFReport(3)} style={styles.button}>
-          PDF Отчет 3
+          Список закрытых заявок в Exel
         </Button>
         <Button type="primary" onClick={() => generatePDFReport(4)} style={styles.button}>
-          PDF Отчет 4
+          Список одобренных заявок в Exel
         </Button>
         <Button type="primary" onClick={() => generatePDFReport(5)} style={styles.button}>
-          PDF Отчет 5
+          Список неодобренных заявок в Exel
         </Button>
         <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
-          PDF Отчет 6
+          Список инцидентов в Exel
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(7)} style={styles.button}>
-          PDF Отчет 7
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Создать заявление по Id в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(8)} style={styles.button}>
-          PDF Отчет 8
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Разница между отгулами и переработками в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(9)} style={styles.button}>
-          PDF Отчет 9
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Разница между отгулами и переработками в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(10)} style={styles.button}>
-          PDF Отчет 10
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Переработки в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(11)} style={styles.button}>
-          PDF Отчет 11
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Больничные в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(12)} style={styles.button}>
-          PDF Отчет 12
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Отпуска в PDF
         </Button>
-        <Button type="primary" onClick={() => generatePDFReport(13)} style={styles.button}>
-          PDF Отчет 13
-        </Button>
-        <Button type="primary" onClick={() => generatePDFReport(14)} style={styles.button}>
-          PDF Отчет 14
-        </Button>
-        <Button type="primary" onClick={() => generatePDFReport(15)} style={styles.button}>
-          PDF Отчет 15
-        </Button>
-        <Button type="primary" onClick={() => generateExcelReport(1)} style={styles.button}>
-          Excel Отчет 1
-        </Button>
-        <Button type="primary" onClick={() => generateExcelReport(2)} style={styles.button}>
-          Excel Отчет 2
-        </Button>
-        <Button type="primary" onClick={() => generateExcelReport(3)} style={styles.button}>
-          Excel Отчет 3
-        </Button>
-        <Button type="primary" onClick={() => generateExcelReport(4)} style={styles.button}>
-          Excel Отчет 4
-        </Button>
-        <Button type="primary" onClick={() => generateExcelReport(5)} style={styles.button}>
-          Excel Отчет 5
+        <Button type="primary" onClick={() => generatePDFReport(6)} style={styles.button}>
+          Отчет - Работающие и не работающие сотрудники в PDF
         </Button>
       </div>
     </div>
@@ -99,10 +78,12 @@ const styles = {
     alignItems: 'center',
   },
   title: {
+    margin: '-400px 20px 20px 20px',
     fontSize: '24px',
     marginBottom: '20px',
   },
   buttonContainer: {
+    margin: '200px 20px 20px 20px',
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',

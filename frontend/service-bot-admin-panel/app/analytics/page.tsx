@@ -7,20 +7,19 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart
 const { Header, Content } = Layout;
 
 const data = [
-  { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-  { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-  { name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
-  { name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
-  { name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
-  { name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
-  { name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
+  { name: 'Page A', Мужчины: 4000, Женщины: 2400, amt: 2400, Отгулы: 4000, Переработки: 2400 },
+  { name: 'Page B', Мужчины: 3000, Женщины: 1398, amt: 2210, Отгулы: 3000, Переработки: 1398 },
+  { name: 'Page C', Мужчины: 2000, Женщины: 9800, amt: 2290, Отгулы: 2000, Переработки: 9800 },
+  { name: 'Page D', Мужчины: 2780, Женщины: 3908, amt: 2000, Отгулы: 2780, Переработки: 3908 },
+  { name: 'Page E', Мужчины: 1890, Женщины: 4800, amt: 2181, Отгулы: 1890, Переработки: 4800 },
+  { name: 'Page F', Мужчины: 2390, Женщины: 3800, amt: 2500, Отгулы: 2390, Переработки: 3800 }
 ];
 
 const pieData = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
+  { name: 'Отдел фронтенд разработки', value: 400 },
+  { name: 'Отдел бекенд разработки', value: 300 },
+  { name: 'Отдел мобильной разработки', value: 300 },
+  { name: 'Отдел веб-дизайна', value: 200 },
 ];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -28,13 +27,13 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const IncidentsPage = () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ color: '#fff', textAlign: 'center', fontSize: '24px' }}>Dashboard</Header>
+      <Header style={{ color: '#fff', textAlign: 'center', fontSize: '24px' }}>Аналитика</Header>
       <Content style={{ padding: '20px 50px', display: 'flex', flexDirection: 'column', flex: 1 }}>
       <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0', background: '#fff' }}>
           <Space>
-            <Button type="primary">Отчет1</Button>
-            <Button type="primary">Отчет2</Button>
-            <Button type="primary">Отчет3</Button>
+            <Button type="primary">Отчет по отпускам</Button>
+            <Button type="primary">Отчет по отгулам</Button>
+            <Button type="primary">Отчет по переработкам</Button>
           </Space>
         </div>
         <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center' }}>
@@ -45,8 +44,8 @@ const IncidentsPage = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="Женщины" stroke="#8884d8" />
+              <Line type="monotone" dataKey="Мужчины" stroke="#82ca9d" />
             </LineChart>
           </div>
           <div style={{ width: '40%', height: '40%' }}>
@@ -56,8 +55,8 @@ const IncidentsPage = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
+              <Bar dataKey="Отгулы" fill="#8884d8" />
+              <Bar dataKey="Переработки" fill="#82ca9d" />
             </BarChart>
           </div>
           <div style={{ width: '40%', height: '40%' }}>

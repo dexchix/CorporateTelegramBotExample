@@ -95,7 +95,7 @@ export default function EmployeesPage() {
             <div style={styles.filterContainer}>
                 <Input placeholder="Поиск по ФИО" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} style={{ width: 200 }} />
                 <Input placeholder="Фильтр по отделу" value={departmentFilter} onChange={(e) => setDepartmentFilter(e.target.value)} style={{ width: 200 }} />
-                <Select placeholder="Фильтр по авторизации" style={{ width: 200 }} onChange={(value) => setAuthorizedFilter(value)}>
+                <Select placeholder="Фильтр по авторизации" style={{ width: 200 , height: 50}} onChange={(value) => setAuthorizedFilter(value)}>
                     <Option value="">Все</Option>
                     <Option value="Да">Да</Option>
                     <Option value="Нет">Нет</Option>
@@ -118,6 +118,7 @@ export default function EmployeesPage() {
 const styles = {
     filterContainer: {
         marginBottom: '20px',
+        marginTop: '20px',
         display: 'flex',
         justifyContent: 'center',
         gap: '10px',
