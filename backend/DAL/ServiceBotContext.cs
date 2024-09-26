@@ -9,7 +9,7 @@ namespace DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
                  => optionsBuilder
                 .UseLazyLoadingProxies()
-                .UseNpgsql("Host=localhost;Database=TestDB;Username=postgres;Password=1Qa2wS_3_4RF");
+                .UseNpgsql("");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
